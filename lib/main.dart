@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           // const
           // const
-          StaticLogo(),
+          const StaticLogo(),
         ],
       ),
     );
@@ -134,15 +134,15 @@ class _AnimateLogoState extends State<AnimateLogo>
           builder: (BuildContext context, Widget? child) {
             return   Transform.rotate(
               angle: _controller.value * 2.0 * 3.141592653589793,
-              child: _buildLogo(),
+              child: Center(child:
+              // const
+              StaticLogo()
+              ),
             );
           },
 
         ));
   }
 
-  _buildLogo() {
-    print("animate logo build");
-    return Center(child: const FlutterLogo(size: 50.0));
-  }
+
 }
