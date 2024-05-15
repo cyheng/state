@@ -17,7 +17,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // AnimateLogo(),
     );
   }
 }
@@ -31,13 +30,8 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 2),
-    vsync: this,
-  )..repeat();
 
   void _incrementCounter() {
     setState(() {
@@ -53,6 +47,19 @@ class _MyHomePageState extends State<MyHomePage>
         title: Text(widget.title),
       ),
       body: _buildStatic(),
+      persistentFooterButtons: <Widget>[
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const AnimateLogo()));
+          },
+          child: const Text('动画'),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text(''),
+        ),
+      ],
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -74,19 +81,11 @@ class _MyHomePageState extends State<MyHomePage>
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           // const
-         // const
-         StaticLogo(),
+          // const
+          StaticLogo(),
         ],
       ),
     );
-  }
-
-  _buildAnimated() {
-    return AnimatedBuilder(
-        animation: _controller,
-        builder: (BuildContext context, Widget? child) {
-          return _buildStatic();
-        });
   }
 }
 
@@ -99,5 +98,50 @@ class StaticLogo extends StatelessWidget {
     return const FlutterLogo(
       size: 50,
     );
+  }
+}
+
+class AnimateLogo extends StatefulWidget {
+  const AnimateLogo({super.key});
+
+  @override
+  State<AnimateLogo> createState() => _AnimateLogoState();
+}
+
+class _AnimateLogoState extends State<AnimateLogo>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  )..repeat();
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text("Animate Logo"),
+        ),
+        body: AnimatedBuilder(
+          animation: _controller,
+          builder: (BuildContext context, Widget? child) {
+            return   Transform.rotate(
+              angle: _controller.value * 2.0 * 3.141592653589793,
+              child: _buildLogo(),
+            );
+          },
+        ));
+  }
+
+  _buildLogo() {
+    print("animate logo build");
+    return const FlutterLogo(size: 50.0);
   }
 }
