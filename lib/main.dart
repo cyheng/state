@@ -137,11 +137,12 @@ class _AnimateLogoState extends State<AnimateLogo>
               child: _buildLogo(),
             );
           },
+
         ));
   }
 
   _buildLogo() {
     print("animate logo build");
-    return const FlutterLogo(size: 50.0);
+    return Center(child: const FlutterLogo(size: 50.0));
   }
 }
