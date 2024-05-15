@@ -190,7 +190,7 @@ class _KeyPageState extends State<KeyPage> {
                 NumberBox(key: ValueKey(1), color: Colors.blue),
                 NumberBox(key: ValueKey(2), color: Colors.red),
                 NumberBox(key: ValueKey(3), color: Colors.green),
-                // 当然还有 ObjectKey , UniqueKey ,GlobalKey 据不细说了
+                // 当然还有 ObjectKey , UniqueKey ,GlobalKey 就不细说了
               ],
 
             ),
