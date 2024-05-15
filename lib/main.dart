@@ -56,8 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
           child: const Text('动画'),
         ),
         ElevatedButton(
-          onPressed: () {},
-          child: const Text(''),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const KeyPage()));
+          },
+          child: const Text('Key'),
         ),
       ],
       floatingActionButton: FloatingActionButton(
@@ -115,7 +118,6 @@ class _AnimateLogoState extends State<AnimateLogo>
     vsync: this,
   )..repeat();
 
-
   @override
   void dispose() {
     _controller.dispose();
@@ -132,17 +134,112 @@ class _AnimateLogoState extends State<AnimateLogo>
         body: AnimatedBuilder(
           animation: _controller,
           builder: (BuildContext context, Widget? child) {
-            return   Transform.rotate(
+            return Transform.rotate(
               angle: _controller.value * 2.0 * 3.141592653589793,
-              child: Center(child:
-              // const
-              StaticLogo()
-              ),
+              child: Center(
+                  child:
+                      // const
+                      StaticLogo()),
             );
           },
-
         ));
   }
+}
 
+class KeyPage extends StatefulWidget {
+  const KeyPage({super.key});
 
+  @override
+  State<KeyPage> createState() => _KeyPageState();
+}
+
+class _KeyPageState extends State<KeyPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Key Page"),
+      ),
+      body: const Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Box(color: Colors.blue),
+                Box(color: Colors.red),
+                Box(color: Colors.green),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NumberBox(color: Colors.blue),
+                NumberBox(color: Colors.green),
+                NumberBox(color: Colors.red),
+
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NumberBox(key: ValueKey(1), color: Colors.blue),
+                NumberBox(key: ValueKey(2), color: Colors.red),
+                NumberBox(key: ValueKey(3), color: Colors.green),
+
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Box extends StatelessWidget {
+  const Box({super.key, required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: color,
+      width: 100,
+      height: 100,
+    );
+  }
+}
+
+class NumberBox extends StatefulWidget {
+  const NumberBox({super.key, required this.color});
+
+  final Color color;
+
+  @override
+  State<NumberBox> createState() => _NumberBoxState();
+}
+
+class _NumberBoxState extends State<NumberBox> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: widget.color,
+        width: 100,
+        height: 100,
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _count++;
+            });
+          },
+          child: Text('$_count'),
+        ));
+  }
 }
