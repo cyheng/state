@@ -62,6 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           child: const Text('Key'),
         ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const DrawerPage()));
+          },
+          child: const Text('Context'),
+        ),
+
       ],
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -180,7 +188,6 @@ class _KeyPageState extends State<KeyPage> {
                 NumberBox(color: Colors.blue),
                 NumberBox(color: Colors.green),
                 NumberBox(color: Colors.red),
-
               ],
             ),
             SizedBox(width: 20),
@@ -192,7 +199,6 @@ class _KeyPageState extends State<KeyPage> {
                 NumberBox(key: ValueKey(3), color: Colors.green),
                 // 当然还有 ObjectKey , UniqueKey ,GlobalKey 就不细说了
               ],
-
             ),
             SizedBox(width: 20),
           ],
@@ -201,6 +207,68 @@ class _KeyPageState extends State<KeyPage> {
     );
   }
 }
+
+class DrawerPage extends StatefulWidget {
+  const DrawerPage({super.key});
+
+  @override
+  State<DrawerPage> createState() => _DrawerPageState();
+}
+
+class _DrawerPageState extends State<DrawerPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Drawer Page"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      drawer: Drawer(),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // 报错: Scaffold.of() called with a context that does not contain a Scaffold.
+            Scaffold.of(context).openDrawer();
+          },
+          child: Text("click me"),
+        ),
+        // 或者用 builder
+        // child: Builder(
+        //   builder: (BuildContext context) {
+        //     return ElevatedButton(
+        //       onPressed: () {
+        //         Scaffold.of(context).openDrawer();
+        //       },
+        //       child: Text("click me"),
+        //     );
+        //   },
+        // ),
+        //   child:  CorrectClickMe(),
+      ),
+    );
+  }
+}
+
+class CorrectClickMe extends StatelessWidget {
+  const CorrectClickMe({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return   ElevatedButton(
+      onPressed: () {
+        Scaffold.of(context).openDrawer();
+      },
+      child: Text("click me"),
+    );
+  }
+}
+
 
 class Box extends StatelessWidget {
   const Box({super.key, required this.color});
